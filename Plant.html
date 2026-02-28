@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Little Garden & Shelter 🌱</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-sky: linear-gradient(180deg, #a8d5e2 0%, #e8f4f8 100%);
+            --bg-ground: #f5ebe0;
+            --grass: #7fb069;
+            --grass-dark: #659b54;
+            --soil: #b08968;
+            --wood: #8d6e54;
+            --cream: #fefae0;
+            --accent-orange: #fb8500;
+            --accent-pink: #ff87ab;
+            --accent-yellow: #ffd60a;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --text-dark: #3a3a3a;
+            --text-light: #fefae0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-ground);
+            color: var(--text-dark);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, button {
+            font-family: 'Fredoka', cursive;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--grass) 0%, var(--grass-dark) 100%);
+            padding: 1.5rem 2rem;
+            box-shadow: 0 4px 20px var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
+            opacity: 0.5;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            gap: 2rem;
+        }
+
+        .title {
+            color: var(--text-light);
+            font-size: 2rem;
+            font-weight: 600;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* Navigation */
+        .nav {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.75rem 1.5rem;
+            border-radius: 30px;
+            color: var(--text-light);
+            border: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            font-size: 1rem;
+            font-family: 'Fredoka', cursive;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            background: white;
+            color: var(--grass-dark);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .stats {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .stat-value {
+            color: var(--accent-yellow);
+            font-weight: 600;
+            font-size: 1.2rem;
+            font-family: 'Fredoka', cursive;
+        }
+
+        .exp-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .exp-bar-bg {
+            width: 200px;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .exp-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-yellow) 0%, var(--accent-orange) 100%);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 10px rgba(255, 214, 10, 0.5);
+        }
+
+        .exp-text {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            text-align: center;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        /* Page Sections */
+        .page-section {
+            display: none;
+        }
+
+        .page-section.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section {
+            background: var(--cream);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 30px var(--shadow);
+            position: relative;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--grass-dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .add-btn {
+            background: var(--accent-orange);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(251, 133, 0, 0.3);
+        }
+
+        .add-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(251, 133, 0, 0.4);
+        }
+
+        .add-btn:active {
+            transform: translateY(0);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1.5rem;
+            min-height: 200px;
+        }
+
+        /* Plant & Animal Cards */
+        .plant-card, .animal-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px var(--shadow);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .plant-card:hover, .animal-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px var(--shadow);
+        }
+
+        .plant-icon, .animal-icon {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .plant-name, .animal-name {
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            color: var(--grass-dark);
+        }
+
+        .plant-stage, .animal-stat {
+            font-size: 0.85rem;
+            text-align: center;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--grass) 0%, var(--grass-dark) 100%);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            flex: 1;
+            background: var(--grass);
+            color: white;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+            min-width: 60px;
+        }
+
+        .action-btn:hover {
+            background: var(--grass-dark);
+            transform: scale(1.05);
+        }
+
+        .action-btn.harvest {
+            background: var(--accent-orange);
+        }
+
+        .action-btn.harvest:hover {
+            background: #e07600;
+        }
+
+        /* Shop */
+        .shop-section {
+            background: var(--cream);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 30px var(--shadow);
+        }
+
+        .shop-title {
+            font-size: 2rem;
+            color: var(--grass-dark);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .shop-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+
+        .shop-tab {
+            background: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 10px var(--shadow);
+        }
+
+        .shop-tab:hover {
+            transform: translateY(-2px);
+        }
+
+        .shop-tab.active {
+            background: var(--grass);
+            color: white;
+            box-shadow: 0 4px 15px rgba(127, 176, 105, 0.4);
+        }
+
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .shop-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px var(--shadow);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .shop-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px var(--shadow);
+        }
+
+        .shop-item-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .shop-item-name {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .shop-item-price {
+            font-size: 1rem;
+            color: var(--accent-orange);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .buy-btn {
+            background: var(--accent-orange);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            width: 100%;
+            font-size: 1rem;
+        }
+
+        .buy-btn:hover {
+            background: #e07600;
+            transform: scale(1.05);
+        }
+
+        .buy-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: scale(1);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #999;
+            grid-column: 1 / -1;
+        }
+
+        .empty-icon {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-state p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .empty-btn {
+            background: var(--grass);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(127, 176, 105, 0.3);
+            font-size: 1rem;
+        }
+
+        .empty-btn:hover {
+            background: var(--grass-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Floating Feedback */
+        .float-feedback {
+            position: fixed;
+            font-weight: 600;
+            font-size: 1.5rem;
+            pointer-events: none;
+            z-index: 1000;
+            animation: floatUp 1s ease-out forwards;
+            font-family: 'Fredoka', cursive;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+        }
+
+        /* Level Up Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: var(--cream);
+            padding: 3rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+            animation: bounceIn 0.5s ease;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-title {
+            font-size: 2.5rem;
+            color: var(--accent-orange);
+            margin-bottom: 1rem;
+        }
+
+        .modal-text {
+            font-size: 1.2rem;
+            color: var(--text-dark);
+            margin-bottom: 2rem;
+        }
+
+        .modal-btn {
+            background: var(--grass);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .modal-btn:hover {
+            background: var(--grass-dark);
+            transform: scale(1.05);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav {
+                order: -1;
+            }
+
+            .stats {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            .grid, .shop-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            }
+
+            .title {
+                font-size: 1.5rem;
+            }
+
+            .nav {
+                gap: 0.5rem;
+            }
+
+            .nav-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <h1 class="title">🌱 My Little Garden & Shelter 🐰</h1>
+            <nav class="nav">
+                <button class="nav-btn active" onclick="showPage('garden', event)">🌿 Garden</button>
+                <button class="nav-btn" onclick="showPage('shelter', event)">🏡 Shelter</button>
+                <button class="nav-btn" onclick="showPage('shop', event)">🏪 Shop</button>
+            </nav>
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-label">Coins:</span>
+                    <span class="stat-value" id="coins">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Level:</span>
+                    <span class="stat-value" id="level">1</span>
+                </div>
+                <div class="stat-item">
+                    <div class="exp-container">
+                        <div class="exp-bar-bg">
+                            <div class="exp-bar-fill" id="expBar"></div>
+                        </div>
+                        <div class="exp-text"><span id="currentExp">0</span> / <span id="expToNext">100</span> EXP</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Garden Page -->
+        <div id="gardenPage" class="page-section active">
+            <div class="section">
+                <div class="section-header">
+                    <h2 class="section-title">🌿 My Garden</h2>
+                    <button class="add-btn" onclick="showPage('shop', event)">🛒 Buy Seeds</button>
+                </div>
+                <div class="grid" id="gardenGrid"></div>
+            </div>
+        </div>
+
+        <!-- Shelter Page -->
+        <div id="shelterPage" class="page-section">
+            <div class="section">
+                <div class="section-header">
+                    <h2 class="section-title">🐾 My Animals</h2>
+                    <button class="add-btn" onclick="showPage('shop', event)">🛒 Adopt Animals</button>
+                </div>
+                <div class="grid" id="shelterGrid"></div>
+            </div>
+        </div>
+
+        <!-- Shop Page -->
+        <div id="shopPage" class="page-section">
+            <div class="shop-section">
+                <h2 class="shop-title">🏪 Shop</h2>
+                <div class="shop-tabs">
+                    <button class="shop-tab active" onclick="switchShopTab('plants', event)">🌱 Plants</button>
+                    <button class="shop-tab" onclick="switchShopTab('animals', event)">🐾 Animals</button>
+                </div>
+                <div class="shop-grid" id="shopGrid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Level Up Modal -->
+    <div class="modal" id="levelUpModal">
+        <div class="modal-content">
+            <div class="modal-title">🎉 Level Up!</div>
+            <div class="modal-text">Congratulations! You've reached level <span id="newLevel"></span>!</div>
+            <button class="modal-btn" onclick="closeLevelUpModal()">Continue</button>
+        </div>
+    </div>
+
+    <script>
+        // Game State
+        let gameState = {
+            coins: 15, // Start with enough to buy one plant
+            level: 1,
+            exp: 0,
+            plants: [],
+            animals: [],
+            nextId: 1
+        };
+
+        // Shop Items
+        const shopItems = {
+            plants: [
+                { name: 'Tomato Seeds', icon: '🍅', price: 10, growthTime: 30000 },
+                { name: 'Carrot Seeds', icon: '🥕', price: 15, growthTime: 25000 },
+                { name: 'Sunflower Seeds', icon: '🌻', price: 20, growthTime: 40000 },
+                { name: 'Strawberry Seeds', icon: '🍓', price: 25, growthTime: 35000 },
+                { name: 'Pumpkin Seeds', icon: '🎃', price: 30, growthTime: 50000 },
+                { name: 'Rose Seeds', icon: '🌹', price: 40, growthTime: 45000 }
+            ],
+            animals: [
+                { name: 'Rabbit', icon: '🐰', price: 50, happiness: 50, hunger: 50 },
+                { name: 'Cat', icon: '🐱', price: 60, happiness: 50, hunger: 50 },
+                { name: 'Dog', icon: '🐶', price: 70, happiness: 50, hunger: 50 },
+                { name: 'Chicken', icon: '🐔', price: 40, happiness: 50, hunger: 50 },
+                { name: 'Pig', icon: '🐷', price: 80, happiness: 50, hunger: 50 },
+                { name: 'Duck', icon: '🦆', price: 45, happiness: 50, hunger: 50 }
+            ]
+        };
+
+        let currentShopTab = 'plants';
+        let currentPage = 'garden';
+
+        // Initialize
+        function init() {
+            loadGame();
+            updateUI();
+            renderGarden();
+            renderShelter();
+            renderShop();
+            startGameLoops();
+        }
+
+        // Page Navigation
+        function showPage(page, e) {
+            // Hide all pages
+            document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            
+            // Show selected page
+            document.getElementById(page + 'Page').classList.add('active');
+            if (e && e.target) {
+                e.target.classList.add('active');
+            }
+            currentPage = page;
+        }
+
+        // Save/Load
+        function saveGame() {
+            localStorage.setItem('gardenGame', JSON.stringify(gameState));
+        }
+
+        function loadGame() {
+            const saved = localStorage.getItem('gardenGame');
+            if (saved) {
+                const loaded = JSON.parse(saved);
+                // Ensure new players get starter coins
+                if (loaded.coins === 0 && loaded.plants.length === 0 && loaded.animals.length === 0) {
+                    loaded.coins = 15;
+                }
+                gameState = loaded;
+            }
+        }
+
+        // UI Updates
+        function updateUI() {
+            document.getElementById('coins').textContent = gameState.coins;
+            document.getElementById('level').textContent = gameState.level;
+            document.getElementById('currentExp').textContent = gameState.exp;
+            
+            const expToNext = gameState.level * 100;
+            document.getElementById('expToNext').textContent = expToNext;
+            
+            const expPercent = (gameState.exp / expToNext) * 100;
+            document.getElementById('expBar').style.width = expPercent + '%';
+        }
+
+        // Garden
+        function renderGarden() {
+            const container = document.getElementById('gardenGrid');
+            
+            if (gameState.plants.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">🌱</div>
+                        <p>Your garden is empty! Visit the shop to buy some seeds.</p>
+                        <button class="empty-btn" onclick="showPage('shop', event)">Go to Shop</button>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = '';
+            
+            gameState.plants.forEach(plant => {
+                const card = createPlantCard(plant);
+                container.appendChild(card);
+            });
+        }
+
+        function createPlantCard(plant) {
+            const card = document.createElement('div');
+            card.className = 'plant-card';
+            
+            const stages = ['🌱', '🌿', '🌾', plant.icon];
+            const stageNames = ['Seed', 'Sprout', 'Growing', 'Harvestable'];
+            
+            const waterPercent = (plant.waterLevel / plant.maxWater) * 100;
+            
+            card.innerHTML = `
+                <div class="plant-icon">${stages[plant.growthStage]}</div>
+                <div class="plant-name">${plant.name}</div>
+                <div class="plant-stage">${stageNames[plant.growthStage]}</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: ${waterPercent}%"></div>
+                </div>
+                <div class="action-buttons">
+                    ${plant.growthStage < 3 ? 
+                        `<button class="action-btn" onclick="waterPlant(${plant.id}, event)">💧 Water</button>` : 
+                        `<button class="action-btn harvest" onclick="harvestPlant(${plant.id}, event)">✨ Harvest</button>`
+                    }
+                </div>
+            `;
+            
+            return card;
+        }
+
+        function waterPlant(id, e) {
+            const plant = gameState.plants.find(p => p.id === id);
+            if (!plant) return;
+            
+            plant.waterLevel = Math.min(plant.waterLevel + 25, plant.maxWater);
+            
+            if (plant.waterLevel >= plant.maxWater && plant.growthStage < 3) {
+                plant.growthStage++;
+                plant.waterLevel = 0;
+                
+                if (plant.growthStage < 3) {
+                    showFloatingFeedback('🌱 Growing!', e.clientX, e.clientY, 'var(--grass)');
+                } else {
+                    showFloatingFeedback('✨ Ready!', e.clientX, e.clientY, 'var(--accent-yellow)');
+                }
+            }
+            
+            gainExp(5);
+            showFloatingFeedback('+5 EXP', e.clientX, e.clientY, 'var(--accent-yellow)');
+            
+            renderGarden();
+            saveGame();
+        }
+
+        function harvestPlant(id, e) {
+            const index = gameState.plants.findIndex(p => p.id === id);
+            if (index === -1) return;
+            
+            const plant = gameState.plants[index];
+            const coins = 20 + gameState.level * 5;
+            
+            gameState.coins += coins;
+            gainExp(25);
+            
+            showFloatingFeedback(`+${coins} 💰`, e.clientX, e.clientY, 'var(--accent-orange)');
+            setTimeout(() => {
+                showFloatingFeedback('+25 EXP', e.clientX, e.clientY + 30, 'var(--accent-yellow)');
+            }, 100);
+            
+            gameState.plants.splice(index, 1);
+            
+            renderGarden();
+            updateUI();
+            renderShop();
+            saveGame();
+        }
+
+        // Shelter
+        function renderShelter() {
+            const container = document.getElementById('shelterGrid');
+            
+            if (gameState.animals.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">🐾</div>
+                        <p>Your shelter is empty! Visit the shop to adopt some animals.</p>
+                        <button class="empty-btn" onclick="showPage('shop', event)">Go to Shop</button>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = '';
+            
+            gameState.animals.forEach(animal => {
+                const card = createAnimalCard(animal);
+                container.appendChild(card);
+            });
+        }
+
+        function createAnimalCard(animal) {
+            const card = document.createElement('div');
+            card.className = 'animal-card';
+            
+            card.innerHTML = `
+                <div class="animal-icon">${animal.icon}</div>
+                <div class="animal-name">${animal.name}</div>
+                <div class="animal-stat">😊 Happiness: ${Math.round(animal.happiness)}%</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: ${animal.happiness}%; background: linear-gradient(90deg, var(--accent-pink) 0%, var(--accent-orange) 100%);"></div>
+                </div>
+                <div class="animal-stat">🍖 Hunger: ${Math.round(animal.hunger)}%</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: ${100 - animal.hunger}%; background: linear-gradient(90deg, var(--accent-yellow) 0%, var(--accent-orange) 100%);"></div>
+                </div>
+                <div class="action-buttons">
+                    <button class="action-btn" onclick="feedAnimal(${animal.id}, event)">🍖 Feed</button>
+                    <button class="action-btn" onclick="playWithAnimal(${animal.id}, event)">🎾 Play</button>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        function feedAnimal(id, e) {
+            const animal = gameState.animals.find(a => a.id === id);
+            if (!animal) return;
+            
+            animal.hunger = Math.max(animal.hunger - 20, 0);
+            gainExp(5);
+            
+            showFloatingFeedback('+5 EXP', e.clientX, e.clientY, 'var(--accent-yellow)');
+            
+            renderShelter();
+            saveGame();
+        }
+
+        function playWithAnimal(id, e) {
+            const animal = gameState.animals.find(a => a.id === id);
+            if (!animal) return;
+            
+            animal.happiness = Math.min(animal.happiness + 15, 100);
+            gainExp(10);
+            
+            showFloatingFeedback('+10 EXP', e.clientX, e.clientY, 'var(--accent-yellow)');
+            
+            renderShelter();
+            saveGame();
+        }
+
+        // Shop
+        function switchShopTab(tab, e) {
+            currentShopTab = tab;
+            document.querySelectorAll('.shop-tab').forEach(btn => btn.classList.remove('active'));
+            e.target.classList.add('active');
+            renderShop();
+        }
+
+        function renderShop() {
+            const container = document.getElementById('shopGrid');
+            container.innerHTML = '';
+            
+            shopItems[currentShopTab].forEach((item, index) => {
+                const canAfford = gameState.coins >= item.price;
+                const itemEl = document.createElement('div');
+                itemEl.className = 'shop-item';
+                itemEl.innerHTML = `
+                    <div class="shop-item-icon">${item.icon}</div>
+                    <div class="shop-item-name">${item.name}</div>
+                    <div class="shop-item-price">💰 ${item.price} coins</div>
+                    <button class="buy-btn" ${!canAfford ? 'disabled' : ''} onclick="buyItem('${currentShopTab}', ${index}, event)">
+                        ${canAfford ? 'Buy' : 'Not enough coins'}
+                    </button>
+                `;
+                container.appendChild(itemEl);
+            });
+        }
+
+        function buyItem(type, index, e) {
+            const item = shopItems[type][index];
+            
+            if (gameState.coins < item.price) {
+                return;
+            }
+            
+            gameState.coins -= item.price;
+            
+            if (type === 'plants') {
+                const plant = {
+                    id: gameState.nextId++,
+                    name: item.name,
+                    icon: item.icon,
+                    growthStage: 0,
+                    waterLevel: 0,
+                    maxWater: 100,
+                    growthTime: item.growthTime,
+                    plantedAt: Date.now()
+                };
+                gameState.plants.push(plant);
+                showFloatingFeedback('🌱 Seeds purchased!', e.clientX, e.clientY, 'var(--grass)');
+                renderGarden();
+            } else {
+                const animal = {
+                    id: gameState.nextId++,
+                    name: item.name,
+                    icon: item.icon,
+                    hunger: item.hunger,
+                    happiness: item.happiness
+                };
+                gameState.animals.push(animal);
+                showFloatingFeedback('🐾 Animal adopted!', e.clientX, e.clientY, 'var(--accent-pink)');
+                renderShelter();
+            }
+            
+            showFloatingFeedback(`-${item.price} 💰`, e.clientX, e.clientY + 40, 'var(--accent-orange)');
+            updateUI();
+            renderShop();
+            saveGame();
+        }
+
+        // EXP & Leveling
+        function gainExp(amount) {
+            gameState.exp += amount;
+            const expToNext = gameState.level * 100;
+            
+            if (gameState.exp >= expToNext) {
+                gameState.exp -= expToNext;
+                gameState.level++;
+                showLevelUpModal();
+            }
+            
+            updateUI();
+            saveGame();
+        }
+
+        function showLevelUpModal() {
+            document.getElementById('newLevel').textContent = gameState.level;
+            document.getElementById('levelUpModal').classList.add('show');
+        }
+
+        function closeLevelUpModal() {
+            document.getElementById('levelUpModal').classList.remove('show');
+        }
+
+        // Floating Feedback
+        function showFloatingFeedback(text, x, y, color) {
+            const feedback = document.createElement('div');
+            feedback.className = 'float-feedback';
+            feedback.textContent = text;
+            feedback.style.left = x + 'px';
+            feedback.style.top = y + 'px';
+            feedback.style.color = color;
+            
+            document.body.appendChild(feedback);
+            
+            setTimeout(() => {
+                feedback.remove();
+            }, 1000);
+        }
+
+        // Game Loops
+        function startGameLoops() {
+            // Decay happiness and hunger, auto-refresh shelter display
+            setInterval(() => {
+                let updated = false;
+                
+                gameState.animals.forEach(animal => {
+                    animal.hunger = Math.min(animal.hunger + 1, 100);
+                    animal.happiness = Math.max(animal.happiness - 0.5, 0);
+                    
+                    // Happy animals generate coins
+                    if (animal.happiness > 70 && Math.random() > 0.7) {
+                        gameState.coins += 2;
+                        updated = true;
+                    }
+                });
+                
+                if (updated) {
+                    updateUI();
+                    renderShop();
+                }
+                
+                // Refresh shelter if on that page
+                if (currentPage === 'shelter') {
+                    renderShelter();
+                }
+                
+                saveGame();
+            }, 10000); // Every 10 seconds
+        }
+
+        // Start the game
+        init();
+    </script>
+</body>
+</html>
